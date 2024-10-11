@@ -1,0 +1,124 @@
+@import '../../vars.css';
+
+.expenseListContainer {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  background: linear-gradient(135deg, #55aad5, #6d55d5);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.mainContent {
+  width: 975px;
+  height: 650px;
+  border-radius: 20px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  background: #FFF;
+  border: 3px solid #ccc;
+  flex-shrink: 0;
+  padding: 20px;
+  margin-right: 100px;
+  position: relative; /* Important for positioning the button */
+}
+
+.header h1 {
+  color: #3a3a3a;
+  font-family: var(--font-roboto);
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.groupedExpenseList {
+  margin-top: 50px;
+  margin-left: 80px;
+  max-height: 400px;
+  border: 2px solid #ccc;
+  overflow-y: auto;
+  padding-right: 10px;
+  width: 100%;
+  max-width: 800px;
+  scrollbar-width: thin;
+  scrollbar-color: #aaa #f5f5f5;
+}
+
+.groupedExpenseList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.groupedExpenseList::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 4px;
+}
+
+.groupedExpenseList::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.categoryGroup {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.categoryGroup:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.categoryGroup h3 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.expenseItems {
+  list-style-type: none;
+  padding: 0;
+}
+
+.expenseItem {
+  margin-bottom: 10px;
+  padding: 12px;
+  color: var(--color-text);
+  font-family: var(--font-roboto);
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the Add Expense button */
+.addButton {
+  position: absolute;
+  margin-right: 10px;
+  margin-top: 10px;
+  top: 20px;
+  right: 20px;
+  padding: 12px 25px;
+  background-color: #6d55d5;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.addButton:active {
+  transform: scale(0.98);
+}

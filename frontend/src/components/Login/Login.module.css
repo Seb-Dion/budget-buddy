@@ -1,0 +1,119 @@
+@import '../../vars.css';
+
+/* Container for the entire page */
+.pageContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #55aad5, #6d55d5);
+}
+
+/* Title for Budget Buddy, positioned above the form */
+.title {
+  font-family: var(--font-roboto);
+  color: #fff;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Container for the form */
+.formContainer {
+  width: 320px;
+  padding: 25px;
+  background-color: #3a3a3a;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.formContainer:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Heading for login/signup */
+.heading {
+  color: #fff;
+  font-family: var(--font-roboto);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Form styling */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input field styling */
+.input {
+  margin-bottom: 15px;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #555;
+  border-radius: 12px;
+  background-color: #4a4a4a;
+  color: white;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: #6d55d5;
+  box-shadow: 0 0 8px rgba(109, 85, 213, 0.4);
+}
+
+/* Button styling */
+.button {
+  padding: 12px;
+  background-color: #6d55d5;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-shadow: 0 5px 15px rgba(109, 85, 213, 0.3);
+}
+
+.button:hover {
+  background-color: #5a47c3;
+  box-shadow: 0 8px 20px rgba(90, 71, 195, 0.4);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+/* Error message styling */
+.error {
+  color: #ff6b6b;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* Text below the form to toggle between login and signup */
+.toggleText {
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Link for switching between login and signup */
+.toggleLink {
+  color: #6d55d5;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.toggleLink:hover {
+  text-decoration: underline;
+}
