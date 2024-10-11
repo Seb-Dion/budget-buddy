@@ -6,6 +6,8 @@ import IncomeList from './components/IncomeList/IncomeList';
 import AddIncome from './components/AddIncome/AddIncome';
 import Login from './components/Login/Login';
 import Dashboard from './components/Dashboard/Dashboard';
+import AddBudget from './components/AddBudget/AddBudget';
+import BudgetList from './components/BudgetList/BudgetList';
 
 const App = () => {
   return (

@@ -15,10 +15,18 @@
 .title {
   font-family: var(--font-roboto);
   color: #fff;
-  font-size: 36px;
+  font-size: 70px;
   font-weight: 700;
   margin-bottom: 20px;
   text-align: center;
+}
+
+.subTitle {
+  font-family: var(--font-roboto);
+  color: #fff;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 24px;
 }
 
 /* Container for the form */
@@ -72,7 +80,7 @@
 /* Button styling */
 .button {
   padding: 12px;
-  background-color: #6d55d5;
+  background-color: #55aad5;
   color: white;
   border: none;
   border-radius: 20px;
@@ -108,7 +116,7 @@
 
 /* Link for switching between login and signup */
 .toggleLink {
-  color: #6d55d5;
+  color: #55aad5;
   cursor: pointer;
   text-decoration: none;
   font-size: 14px;

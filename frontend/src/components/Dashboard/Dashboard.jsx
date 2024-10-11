@@ -13,19 +13,27 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
-
+  
       // Fetch expenses and budget data
       const expensesResponse = await axios.get('/budget/expenses', { headers });
+      const incomeResponse = await axios.get('/budget/income', { headers });
       const budgetResponse = await axios.get('/budget/total', { headers });
-
-      const expenses = expensesResponse.data.expenses;
-      setRecentTransactions(expenses.slice(0, 3));
+  
+      // Set up expenses and income with type information
+      const expenses = expensesResponse.data.expenses.map(exp => ({ ...exp, type: 'expense' }));
+      const income = incomeResponse.data.income.map(inc => ({ ...inc, type: 'income' }));
+  
+      // Combine both and sort by date if necessary
+      const transactions = [...expenses, ...income].sort((a, b) => new Date(b.date) - new Date(a.date));
+      setRecentTransactions(transactions.slice(0, 3));
+  
       setBudgetUsed(budgetResponse.data.used);
       setBudgetTotal(budgetResponse.data.total);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchData(); // Fetch data on component mount
@@ -44,10 +52,10 @@ const Dashboard = () => {
             {recentTransactions.length > 0 ? (
               recentTransactions.map((transaction, index) => (
                 <div key={index} className={styles.transactionCard}>
-                  <p>${transaction.amount.toFixed(2)}</p>
-                  <span className={transaction.amount > 0 ? styles.income : styles.expense}>
-                    {transaction.category}
+                  <span className={`${transaction.amount} ${transaction.type === 'income' ? styles.income : styles.expense}`}>
+                    ${transaction.amount.toFixed(2)}
                   </span>
+                  <p className={styles.transactionCategory}>{transaction.type === 'income' ? transaction.source : transaction.category}</p>
                 </div>
               ))
             ) : (

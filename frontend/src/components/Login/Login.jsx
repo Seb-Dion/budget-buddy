@@ -47,6 +47,7 @@ const Login = () => {
     return (
         <div className={styles.pageContainer}>
             <div className={styles.title}>Budget Buddy</div>
+            <div className={styles.subTitle}>An all in one expense tracker.</div>
             <div className={styles.formContainer}>
                 <h2 className={styles.heading}>{isSignUp ? 'Sign Up' : 'Login'}</h2>
                 <form onSubmit={handleSubmit} className={styles.form}>

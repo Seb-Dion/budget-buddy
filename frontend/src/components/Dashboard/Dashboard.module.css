@@ -42,12 +42,12 @@
 }
 
 .transactionsSection h2 {
-  color: #555;
+  color: var(--color-text);
   font-family: var(--font-roboto);
   font-size: 24px;
   font-weight: 600;
   line-height: normal;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   text-align: left;
 }
 
@@ -62,11 +62,15 @@
   height: 100px;
   border-radius: 12px;
   background: #f5f5f5;
-  flex-shrink: 0;
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center; /* Center elements vertically */
+  align-items: center; /* Center elements horizontally */
   border: 1px solid #ccc;
   margin-bottom: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
+  padding: 10px;
 }
 
 .transactionCard:hover {
@@ -79,25 +83,33 @@
   font-family: var(--font-roboto);
   font-size: 20px;
   text-align: center;
-  font-weight: 700;
   margin-top: 10px;
+}
+
+.transactionAmount {
+  margin-bottom: 5px; /* Space between amount and category */
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .expense {
   color: #c0392b;
-  font-size: 18px;
-  font-weight: 500;
-  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .income {
   color: #27ae60;
-  font-size: 18px;
-  font-weight: 500;
-  margin-left: 80px;
-  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .barChartSection {
   margin-top: 30px;
+}
+
+.transactionCategory {
+  color: #333;
+  font-family: var(--font-roboto);
+  font-size: 16px;
 }
