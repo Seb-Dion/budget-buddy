@@ -52,7 +52,10 @@ const Sidebar = () => {
           <img src={arrowIcon} alt="Arrow" className={styles.arrowIcon} />
           Income
         </NavLink>
-        <NavLink to="/add-budget" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+        <NavLink
+          to="/budgets"
+          className={() => (isActive(['/add-budget', '/budgets']) ? `${styles.navLink} ${styles.active}` : styles.navLink)}
+        >
           <img src={arrowIcon} alt="Arrow" className={styles.arrowIcon} />
           Budget
         </NavLink>

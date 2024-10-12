@@ -1,0 +1,56 @@
+@import '../../vars.css';
+
+.budgetListContainer {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    background: linear-gradient(135deg, #55aad5, #6d55d5);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+.mainContent {
+    width: 975px;
+    height: 650px;
+    border-radius: 20px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    background: #FFF;
+    border: 3px solid #ccc;
+    flex-shrink: 0;
+    padding: 20px;
+    margin-right: 100px;
+    position: relative;
+  }
+
+.header h1 {
+  font-size: 36px;
+  color: #333;
+}
+
+.budgetList {
+  margin-top: 20px;
+}
+
+.budgetItem {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.addButton {
+  padding: 10px;
+  background-color: #6d55d5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 20px;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+}

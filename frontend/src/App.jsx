@@ -20,6 +20,8 @@ const App = () => {
           <Route path="/add-expense" element={<AddExpense />} />
           <Route path="/income" element={<IncomeList />} />
           <Route path="/add-income" element={<AddIncome />} />
+          <Route path="/budgets" element={<BudgetList />} />
+          <Route path="/add-budget" element={<AddBudget />} />
           <Route path="/" element={<Login />} /> {/* Default route */}
         </Routes>
       </div>
