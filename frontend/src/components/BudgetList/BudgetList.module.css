@@ -25,8 +25,13 @@
   }
 
 .header h1 {
-  font-size: 36px;
-  color: #333;
+    color: #3a3a3a;
+    font-family: var(--font-roboto);
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: left;
+    margin-left: 10px;
 }
 
 .budgetList {
@@ -41,14 +46,18 @@
 }
 
 .addButton {
-  padding: 10px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 12px 25px;
   background-color: #6d55d5;
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  margin-bottom: 20px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .addButton:hover {
