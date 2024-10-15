@@ -9,6 +9,8 @@ const AddExpense = () => {
   const [date, setDate] = useState("");
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -34,7 +36,7 @@ const AddExpense = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("User is not authenticated.");
+        setErrorMessage("User is not authenticated.");
         return;
       }
       await axios.post(
@@ -49,7 +51,7 @@ const AddExpense = () => {
         }
       );
 
-      alert("Expense added successfully!");
+      setSuccessMessage("Expense added successfully!");
       setCategory("");
       setAmount("");
       setDate("");
@@ -58,7 +60,7 @@ const AddExpense = () => {
         "Error adding expense:",
         error.response ? error.response.data : error.message
       );
-      alert("Failed to add expense. Please make sure you are authenticated.");
+      setErrorMessage("Failed to add expense. Please try again.");
     }
   };
 
@@ -84,6 +86,10 @@ const AddExpense = () => {
           <h1>Add Expense</h1>
         </header>
         <form onSubmit={handleAddExpense} className={styles.form}>
+          {/* Display Success or Error Messages */}
+          {successMessage && <p className={styles.success}>{successMessage}</p>}
+          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+
           <div className={styles.dropdownContainer}>
             <input
               type="text"
