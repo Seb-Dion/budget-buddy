@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify'; // Import Toastify components
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import styles from './AddIncome.module.css';
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -8,16 +9,13 @@ const AddIncome = () => {
   const [source, setSource] = useState('');
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
-  const [successMessage, setSuccessMessage] = useState(''); // State for success message
-  const [errorMessage, setErrorMessage] = useState(''); // State for error message
-  const navigate = useNavigate();
 
   const handleAddIncome = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        setErrorMessage('User is not authenticated.');
+        toast.error('User is not authenticated.');
         return;
       }
 
@@ -33,14 +31,13 @@ const AddIncome = () => {
         }
       );
 
-      setSuccessMessage('Income added successfully!');
-      setErrorMessage(''); // Clear error message
+      toast.success('Income added successfully!'); // Show success toast
       setSource('');
       setAmount('');
       setDate('');
     } catch (error) {
       console.error('Error adding income:', error.response ? error.response.data : error.message);
-      setErrorMessage('Failed to add income. Please try again.');
+      toast.error('Failed to add income. Please try again.'); // Show error toast
     }
   };
 
@@ -48,14 +45,11 @@ const AddIncome = () => {
     <div className={styles.addIncomeContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
+        <ToastContainer /> {/* Add ToastContainer for notifications */}
         <header className={styles.header}>
           <h1>Add Income</h1>
         </header>
         <form onSubmit={handleAddIncome} className={styles.form}>
-          {/* Display Success or Error Messages */}
-          {successMessage && <p className={styles.success}>{successMessage}</p>}
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-
           <input
             type="text"
             placeholder="Source"

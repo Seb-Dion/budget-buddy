@@ -46,6 +46,20 @@ def get_expenses():
 
     return jsonify(expenses=expense_list), 200
 
+# Route to delete an expense
+@budget_bp.route('/expenses/<int:expense_id>', methods=['DELETE'])
+@jwt_required()
+def delete_expense(expense_id):
+    user_id = get_jwt_identity()
+    expense = Expense.query.filter_by(id=expense_id, user_id=user_id).first()
+
+    if expense:
+        db.session.delete(expense)
+        db.session.commit()
+        return jsonify({"message": "Expense deleted successfully!"}), 200
+
+    return jsonify({"error": "Expense not found."}), 404
+
 # Route to add a new income
 @budget_bp.route('/income', methods=['POST'])
 @jwt_required()
@@ -85,6 +99,20 @@ def get_income():
     } for income in income_records]
 
     return jsonify(income=income_list), 200
+
+# Route to delete an income record
+@budget_bp.route('/income/<int:income_id>', methods=['DELETE'])
+@jwt_required()
+def delete_income(income_id):
+    user_id = get_jwt_identity()
+    income = Income.query.filter_by(id=income_id, user_id=user_id).first()
+
+    if income:
+        db.session.delete(income)
+        db.session.commit()
+        return jsonify({"message": "Income deleted successfully!"}), 200
+
+    return jsonify({"error": "Income not found."}), 404
 
 # Route to set or update a budget for a category in a particular month
 @budget_bp.route('/budget', methods=['POST'])
@@ -133,6 +161,20 @@ def get_budgets():
     } for budget in budgets]
 
     return jsonify(budgets=budget_list), 200
+
+# Route to delete a budget
+@budget_bp.route('/budget/<int:budget_id>', methods=['DELETE'])
+@jwt_required()
+def delete_budget(budget_id):
+    user_id = get_jwt_identity()
+    budget = Budget.query.filter_by(id=budget_id, user_id=user_id).first()
+
+    if budget:
+        db.session.delete(budget)
+        db.session.commit()
+        return jsonify({"message": "Budget deleted successfully!"}), 200
+
+    return jsonify({"error": "Budget not found."}), 404
 
 # Route to get total and used budget for the authenticated user
 @budget_bp.route('/total', methods=['GET'])

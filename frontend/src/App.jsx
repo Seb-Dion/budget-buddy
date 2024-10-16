@@ -8,6 +8,8 @@ import Login from './components/Login/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import AddBudget from './components/AddBudget/AddBudget';
 import BudgetList from './components/BudgetList/BudgetList';
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for Toasts
 
 const App = () => {
   return (
@@ -20,10 +22,11 @@ const App = () => {
           <Route path="/add-expense" element={<AddExpense />} />
           <Route path="/income" element={<IncomeList />} />
           <Route path="/add-income" element={<AddIncome />} />
-          <Route path="/budgets" element={<BudgetList />} />
           <Route path="/add-budget" element={<AddBudget />} />
+          <Route path="/budgets" element={<BudgetList />} />
           <Route path="/" element={<Login />} /> {/* Default route */}
         </Routes>
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       </div>
     </Router>
   );

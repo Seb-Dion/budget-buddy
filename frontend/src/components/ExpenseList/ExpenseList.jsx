@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import styles from './ExpenseList.module.css';
 import Sidebar from '../Sidebar/Sidebar';
@@ -20,7 +21,7 @@ const ExpenseList = () => {
         groupByCategory(response.data.expenses);
       } catch (error) {
         console.error('Error fetching expenses:', error);
-        alert('Failed to fetch expenses');
+        toast.error('Failed to fetch expenses');
       }
     };
 
@@ -40,6 +41,21 @@ const ExpenseList = () => {
       return acc;
     }, {});
     setGroupedExpenses(grouped);
+  };
+
+  const handleDeleteExpense = async (expenseId) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`/budget/expenses/${expenseId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setExpenses(expenses.filter(exp => exp.id !== expenseId));
+      groupByCategory(expenses.filter(exp => exp.id !== expenseId));
+      toast.success('Expense deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting expense:', error);
+      toast.error('Failed to delete expense');
+    }
   };
 
   const handleAddExpense = () => {
@@ -67,7 +83,13 @@ const ExpenseList = () => {
                   {groupedExpenses[category].items.map(expense => (
                     <li key={expense.id} className={styles.expenseItem}>
                       <strong>Amount:</strong> ${expense.amount.toFixed(2)} <br />
-                      <strong>Date:</strong> {expense.date}
+                      <strong>Date:</strong> {expense.date} <br />
+                      <button
+                        onClick={() => handleDeleteExpense(expense.id)}
+                        className={styles.deleteButton}
+                      >
+                        Delete
+                      </button>
                     </li>
                   ))}
                 </ul>

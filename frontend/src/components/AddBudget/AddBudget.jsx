@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './AddBudget.module.css';
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -7,15 +9,13 @@ const AddBudget = () => {
   const [category, setCategory] = useState('');
   const [limit, setLimit] = useState('');
   const [month, setMonth] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
 
   const handleAddBudget = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        alert('User is not authenticated.');
+        toast.error('User is not authenticated.');
         return;
       }
 
@@ -31,13 +31,13 @@ const AddBudget = () => {
         }
       );
 
-      setSuccessMessage('Budget added successfully!');
+      toast.success('Budget added successfully!');
       setCategory('');
       setLimit('');
       setMonth('');
     } catch (error) {
       console.error('Error adding budget:', error.response ? error.response.data : error.message);
-      setErrorMessage('Failed to add budget. Please try again.');
+      toast.error('Failed to add budget. Please try again.');
     }
   };
 
@@ -45,12 +45,11 @@ const AddBudget = () => {
     <div className={styles.addBudgetContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
+        <ToastContainer /> {/* Added ToastContainer */}
         <header className={styles.header}>
           <h1>Add Budget</h1>
         </header>
         <form onSubmit={handleAddBudget} className={styles.form}>
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-          {successMessage && <p className={styles.success}>{successMessage}</p>}
           <input
             type="text"
             placeholder="Category"

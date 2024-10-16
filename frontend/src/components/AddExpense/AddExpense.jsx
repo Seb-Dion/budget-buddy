@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "./AddExpense.module.css";
 import Sidebar from "../Sidebar/Sidebar";
 
@@ -9,8 +11,6 @@ const AddExpense = () => {
   const [date, setDate] = useState("");
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
-  const [errorMessage, setErrorMessage] = useState(""); // State for error message
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -36,7 +36,7 @@ const AddExpense = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        setErrorMessage("User is not authenticated.");
+        toast.error("User is not authenticated.");
         return;
       }
       await axios.post(
@@ -51,7 +51,7 @@ const AddExpense = () => {
         }
       );
 
-      setSuccessMessage("Expense added successfully!");
+      toast.success("Expense added successfully!");
       setCategory("");
       setAmount("");
       setDate("");
@@ -60,7 +60,7 @@ const AddExpense = () => {
         "Error adding expense:",
         error.response ? error.response.data : error.message
       );
-      setErrorMessage("Failed to add expense. Please try again.");
+      toast.error("Failed to add expense. Please try again.");
     }
   };
 
@@ -82,14 +82,11 @@ const AddExpense = () => {
     <div className={styles.addExpenseContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
+        <ToastContainer /> {/* Added ToastContainer */}
         <header className={styles.header}>
           <h1>Add Expense</h1>
         </header>
         <form onSubmit={handleAddExpense} className={styles.form}>
-          {/* Display Success or Error Messages */}
-          {successMessage && <p className={styles.success}>{successMessage}</p>}
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-
           <div className={styles.dropdownContainer}>
             <input
               type="text"

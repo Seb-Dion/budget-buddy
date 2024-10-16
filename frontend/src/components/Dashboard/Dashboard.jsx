@@ -8,8 +8,10 @@ const Dashboard = () => {
   const [recentTransactions, setRecentTransactions] = useState([]);
   const [budgetUsed, setBudgetUsed] = useState(0);
   const [budgetTotal, setBudgetTotal] = useState(0);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const fetchData = async () => {
+    setLoading(true); // Set loading to true when fetching starts
     try {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
@@ -31,10 +33,11 @@ const Dashboard = () => {
       setBudgetTotal(budgetResponse.data.total);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false); // Set loading to false once fetching is complete
     }
   };
   
-
   useEffect(() => {
     fetchData(); // Fetch data on component mount
   }, []);
@@ -46,26 +49,32 @@ const Dashboard = () => {
         <header className={styles.header}>
           <h1>Dashboard</h1>
         </header>
-        <section className={styles.transactionsSection}>
-          <h2>Recent Transactions</h2>
-          <div className={styles.transactionCards}>
-            {recentTransactions.length > 0 ? (
-              recentTransactions.map((transaction, index) => (
-                <div key={index} className={styles.transactionCard}>
-                  <span className={`${transaction.amount} ${transaction.type === 'income' ? styles.income : styles.expense}`}>
-                    ${transaction.amount.toFixed(2)}
-                  </span>
-                  <p className={styles.transactionCategory}>{transaction.type === 'income' ? transaction.source : transaction.category}</p>
-                </div>
-              ))
-            ) : (
-              <p>No recent transactions found.</p>
-            )}
-          </div>
-        </section>
-        <section className={styles.barChartSection}>
-          <TopSpendingCategories />
-        </section>
+        {loading ? (
+          <div className={styles.spinner}></div> // Display spinner when loading
+        ) : (
+          <>
+            <section className={styles.transactionsSection}>
+              <h2>Recent Transactions</h2>
+              <div className={styles.transactionCards}>
+                {recentTransactions.length > 0 ? (
+                  recentTransactions.map((transaction, index) => (
+                    <div key={index} className={styles.transactionCard}>
+                      <span className={`${transaction.type === 'income' ? styles.income : styles.expense}`}>
+                        ${transaction.amount.toFixed(2)}
+                      </span>
+                      <p className={styles.transactionCategory}>{transaction.type === 'income' ? transaction.source : transaction.category}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No recent transactions found.</p>
+                )}
+              </div>
+            </section>
+            <section className={styles.barChartSection}>
+              <TopSpendingCategories />
+            </section>
+          </>
+        )}
       </main>
     </div>
   );
