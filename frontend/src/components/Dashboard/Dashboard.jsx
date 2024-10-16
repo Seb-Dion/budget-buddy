@@ -18,33 +18,50 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
-
+  
+      // Fetch data from the backend
       const expensesResponse = await axios.get('/budget/expenses', { headers });
       const incomeResponse = await axios.get('/budget/income', { headers });
-      const budgetResponse = await axios.get('/budget/total', { headers });
+      const budgetsResponse = await axios.get('/budget/budgets', { headers });
       const cashFlowResponse = await axios.get('/budget/cash-flow', { headers });
-
+  
+      // Get expenses and income
       const expenses = expensesResponse.data.expenses.map(exp => ({ ...exp, type: 'expense' }));
       const income = incomeResponse.data.income.map(inc => ({ ...inc, type: 'income' }));
-
+  
+      // Combine and sort transactions
       const transactions = [...expenses, ...income].sort((a, b) => new Date(b.date) - new Date(a.date));
       setRecentTransactions(transactions.slice(0, 3));
-
-      setBudgetUsed(budgetResponse.data.used);
-      setBudgetTotal(budgetResponse.data.total);
+  
+      // Calculate total used budget for each category
+      const budgetUsage = {};
+      expenses.forEach(exp => {
+        if (!budgetUsage[exp.category]) {
+          budgetUsage[exp.category] = 0;
+        }
+        budgetUsage[exp.category] += exp.amount;
+      });
+  
+      // Check for budget warnings
+      const budgets = budgetsResponse.data.budgets;
+      budgets.forEach(budget => {
+        const spent = budgetUsage[budget.category] || 0;
+        if (spent >= 0.8 * budget.limit && spent < budget.limit) {
+          toast.warning(`You're close to your budget limit in ${budget.category}!`);
+        } else if (spent >= budget.limit) {
+          toast.error(`You have exceeded your budget in ${budget.category}!`);
+        }
+      });
+  
       setCashFlow(cashFlowResponse.data.cash_flow);
-
-      if (budgetResponse.data.used >= 0.8 * budgetResponse.data.total && budgetResponse.data.used < budgetResponse.data.total) {
-        toast.warning("You are close to your budget limit!");
-      } else if (budgetResponse.data.used >= budgetResponse.data.total) {
-        toast.error("You have exceeded your budget!");
-      }
+  
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const getMonthName = () => {
     const date = new Date();
