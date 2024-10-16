@@ -39,27 +39,26 @@ const AddExpense = () => {
         toast.error("User is not authenticated.");
         return;
       }
-      await axios.post(
+      const response = await axios.post(
         "/budget/expenses",
-        {
-          category,
-          amount: parseFloat(amount),
-          date,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { category, amount: parseFloat(amount), date },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      toast.success("Expense added successfully!");
+      // Show appropriate messages based on budget status
+      if (response.data.status === "over_budget") {
+        toast.warning(response.data.message);
+      } else if (response.data.status === "close_to_budget") {
+        toast.info(response.data.message);
+      } else {
+        toast.success(response.data.message);
+      }
+
       setCategory("");
       setAmount("");
       setDate("");
     } catch (error) {
-      console.error(
-        "Error adding expense:",
-        error.response ? error.response.data : error.message
-      );
+      console.error("Error adding expense:", error);
       toast.error("Failed to add expense. Please try again.");
     }
   };
@@ -82,7 +81,7 @@ const AddExpense = () => {
     <div className={styles.addExpenseContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
-        <ToastContainer /> {/* Added ToastContainer */}
+        <ToastContainer />
         <header className={styles.header}>
           <h1>Add Expense</h1>
         </header>

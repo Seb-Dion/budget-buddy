@@ -6,7 +6,7 @@ from app import db
 
 budget_bp = Blueprint('budget', __name__)
 
-# Route to add a new expense
+# Route to add a new expense with budget tracking
 @budget_bp.route('/expenses', methods=['POST'])
 @jwt_required()
 def add_expense():
@@ -23,10 +23,31 @@ def add_expense():
             amount=float(data['amount']),
             date=datetime.strptime(data['date'], '%Y-%m-%d')
         )
+
+        # Check if there's a budget for this category in the current month
+        expense_date = datetime.strptime(data['date'], '%Y-%m-%d')
+        month = expense_date.strftime('%Y-%m')
+        budget = Budget.query.filter_by(user_id=user_id, category=data['category'], month=month).first()
+
+        if budget:
+            # Calculate total expenses for this category and month
+            total_expenses = sum(exp.amount for exp in Expense.query.filter_by(
+                user_id=user_id, category=data['category']
+            ).filter(Expense.date.between(f"{month}-01", f"{month}-31")).all())
+
+            # Check against budget limits
+            if total_expenses + float(data['amount']) > budget.limit:
+                db.session.add(new_expense)
+                db.session.commit()
+                return jsonify({"message": "Expense added, but you have exceeded your budget!", "status": "over_budget"}), 201
+            elif total_expenses + float(data['amount']) >= 0.8 * budget.limit:
+                db.session.add(new_expense)
+                db.session.commit()
+                return jsonify({"message": "Expense added. You are close to your budget limit!", "status": "close_to_budget"}), 201
+
         db.session.add(new_expense)
         db.session.commit()
-
-        return jsonify({"message": "Expense added successfully!"}), 201
+        return jsonify({"message": "Expense added successfully!", "status": "ok"}), 201
     except ValueError:
         return jsonify({"error": "Invalid data format"}), 400
 
@@ -187,3 +208,19 @@ def get_total_budget():
     total_used = sum(expense.amount for expense in Expense.query.filter_by(user_id=user_id).all())
 
     return jsonify({"total": total_limit, "used": total_used}), 200
+
+# Route to get current month's cash flow
+@budget_bp.route('/cash-flow', methods=['GET'])
+@jwt_required()
+def get_monthly_cash_flow():
+    user_id = get_jwt_identity()
+    today = datetime.today()
+    month_start = today.replace(day=1).strftime('%Y-%m-%d')
+    month_end = today.replace(day=31).strftime('%Y-%m-%d')
+
+    # Calculate total income and expenses for the current month
+    total_income = sum(income.amount for income in Income.query.filter_by(user_id=user_id).filter(Income.date.between(month_start, month_end)).all())
+    total_expenses = sum(expense.amount for expense in Expense.query.filter_by(user_id=user_id).filter(Expense.date.between(month_start, month_end)).all())
+
+    cash_flow = total_income - total_expenses
+    return jsonify({"cash_flow": cash_flow, "income": total_income, "expenses": total_expenses}), 200
