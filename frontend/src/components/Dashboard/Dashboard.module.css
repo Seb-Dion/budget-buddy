@@ -173,3 +173,50 @@
     transform: rotate(360deg);
   }
 }
+
+/* Add styles for savings goals */
+.savingsGoalsSection {
+  margin-top: 40px;
+}
+
+.savingsGoalContainer {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.savingsGoalContainer h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.goal {
+  margin-bottom: 20px;
+}
+
+.progressBar {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progressNearGoal {
+  background-color: #f39c12; /* Orange */
+}
+
+.progressOverGoal {
+  background-color: #c0392b; /* Red */
+}
+
+.goal p {
+  margin-top: 10px;
+}

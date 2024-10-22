@@ -61,7 +61,6 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
-  
 
   const getMonthName = () => {
     const date = new Date();

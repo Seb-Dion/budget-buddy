@@ -224,3 +224,4 @@ def get_monthly_cash_flow():
 
     cash_flow = total_income - total_expenses
     return jsonify({"cash_flow": cash_flow, "income": total_income, "expenses": total_expenses}), 200
+
