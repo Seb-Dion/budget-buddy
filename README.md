@@ -8,7 +8,7 @@
 - **Income Tracking**: Record and manage your income sources.
 - **Budget Management**: Set monthly budgets for different categories and track your progress.
 - **Savings Goals**: Create savings goals, track progress, and visualize the progress toward your financial targets.
-- **Positive Streaks**:
+- **Positive Streaks (In Development)**:
   - Daily login streak.
   - Positive monthly balance streak.
   - Monthly budget streak for staying within your budget.
