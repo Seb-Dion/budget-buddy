@@ -216,7 +216,7 @@ def get_monthly_cash_flow():
     user_id = get_jwt_identity()
     today = datetime.today()
     month_start = today.replace(day=1).strftime('%Y-%m-%d')
-    month_end = today.replace(day=31).strftime('%Y-%m-%d')
+    month_end = today.replace(day=30).strftime('%Y-%m-%d')
 
     # Calculate total income and expenses for the current month
     total_income = sum(income.amount for income in Income.query.filter_by(user_id=user_id).filter(Income.date.between(month_start, month_end)).all())
