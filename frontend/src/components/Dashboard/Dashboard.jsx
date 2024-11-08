@@ -12,6 +12,8 @@ const Dashboard = () => {
   const [budgetTotal, setBudgetTotal] = useState(0);
   const [cashFlow, setCashFlow] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [budgets, setBudgets] = useState([]);
+  const [budgetUsage, setBudgetUsage] = useState({});
 
   const fetchData = async () => {
     setLoading(true);
@@ -42,16 +44,9 @@ const Dashboard = () => {
         budgetUsage[exp.category] += exp.amount;
       });
   
-      // Check for budget warnings
-      const budgets = budgetsResponse.data.budgets;
-      budgets.forEach(budget => {
-        const spent = budgetUsage[budget.category] || 0;
-        if (spent >= 0.8 * budget.limit && spent < budget.limit) {
-          toast.warning(`You're close to your budget limit in ${budget.category}!`);
-        } else if (spent >= budget.limit) {
-          toast.error(`You have exceeded your budget in ${budget.category}!`);
-        }
-      });
+      // Store budget data in state instead of showing notifications
+      setBudgets(budgetsResponse.data.budgets);
+      setBudgetUsage(budgetUsage);
   
       setCashFlow(cashFlowResponse.data.cash_flow);
   
@@ -70,6 +65,17 @@ const Dashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    budgets.forEach(budget => {
+      const spent = budgetUsage[budget.category] || 0;
+      if (spent >= 0.8 * budget.limit && spent < budget.limit) {
+        toast.warning(`You're close to your budget limit in ${budget.category}!`);
+      } else if (spent >= budget.limit) {
+        toast.error(`You have exceeded your budget in ${budget.category}!`);
+      }
+    });
+  }, [budgets, budgetUsage]); // Only run when budget data changes
 
   return (
     <div className={styles.dashboardContainer}>

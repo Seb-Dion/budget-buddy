@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import Expense, Income, Budget
 from datetime import datetime
 from app import db
+from calendar import monthrange
 
 budget_bp = Blueprint('budget', __name__)
 
@@ -216,7 +217,9 @@ def get_monthly_cash_flow():
     user_id = get_jwt_identity()
     today = datetime.today()
     month_start = today.replace(day=1).strftime('%Y-%m-%d')
-    month_end = today.replace(day=30).strftime('%Y-%m-%d')
+    # Get last day of current month
+    _, last_day = monthrange(today.year, today.month)
+    month_end = today.replace(day=last_day).strftime('%Y-%m-%d')
 
     # Calculate total income and expenses for the current month
     total_income = sum(income.amount for income in Income.query.filter_by(user_id=user_id).filter(Income.date.between(month_start, month_end)).all())
