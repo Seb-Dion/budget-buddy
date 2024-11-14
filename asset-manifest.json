@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/budget-buddy/static/css/main.e6d479cc.css",
+    "main.js": "/budget-buddy/static/js/main.daa4e2fa.js",
+    "static/js/488.261d7ab8.chunk.js": "/budget-buddy/static/js/488.261d7ab8.chunk.js",
+    "static/media/roboto-latin-400-normal.woff2": "/budget-buddy/static/media/roboto-latin-400-normal.297d48e1b5a10c0831a9.woff2",
+    "static/media/roboto-latin-400-normal.woff": "/budget-buddy/static/media/roboto-latin-400-normal.047a7839f69b209db815.woff",
+    "static/media/roboto-cyrillic-ext-400-normal.woff2": "/budget-buddy/static/media/roboto-cyrillic-ext-400-normal.5cec61a21cc20180fbe1.woff2",
+    "static/media/roboto-cyrillic-ext-400-normal.woff": "/budget-buddy/static/media/roboto-cyrillic-ext-400-normal.135d076fa32aa0b4d105.woff",
+    "static/media/roboto-latin-ext-400-normal.woff2": "/budget-buddy/static/media/roboto-latin-ext-400-normal.2eeae187764baf05867d.woff2",
+    "static/media/roboto-latin-ext-400-normal.woff": "/budget-buddy/static/media/roboto-latin-ext-400-normal.27da5b36b6d3a16f53f4.woff",
+    "static/media/avatar-generic.png": "/budget-buddy/static/media/avatar-generic.2c9326511e6f49cbef66.png",
+    "static/media/roboto-cyrillic-400-normal.woff2": "/budget-buddy/static/media/roboto-cyrillic-400-normal.a9e19870cf6c4b973427.woff2",
+    "static/media/roboto-cyrillic-400-normal.woff": "/budget-buddy/static/media/roboto-cyrillic-400-normal.5d2930082227d172f62c.woff",
+    "static/media/roboto-greek-400-normal.woff2": "/budget-buddy/static/media/roboto-greek-400-normal.2c32b1315be61477013a.woff2",
+    "static/media/roboto-greek-400-normal.woff": "/budget-buddy/static/media/roboto-greek-400-normal.160a791a8e4f46bca3cc.woff",
+    "static/media/roboto-vietnamese-400-normal.woff2": "/budget-buddy/static/media/roboto-vietnamese-400-normal.d3f8e26d6c27de8102b6.woff2",
+    "static/media/roboto-vietnamese-400-normal.woff": "/budget-buddy/static/media/roboto-vietnamese-400-normal.0dc97c66f9b542d6fa17.woff",
+    "static/media/roboto-greek-ext-400-normal.woff2": "/budget-buddy/static/media/roboto-greek-ext-400-normal.1df4abad55796d11a0c8.woff2",
+    "static/media/roboto-greek-ext-400-normal.woff": "/budget-buddy/static/media/roboto-greek-ext-400-normal.16eb83b4a3b1ea994243.woff",
+    "index.html": "/budget-buddy/index.html",
+    "main.e6d479cc.css.map": "/budget-buddy/static/css/main.e6d479cc.css.map",
+    "main.daa4e2fa.js.map": "/budget-buddy/static/js/main.daa4e2fa.js.map",
+    "488.261d7ab8.chunk.js.map": "/budget-buddy/static/js/488.261d7ab8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6d479cc.css",
+    "static/js/main.daa4e2fa.js"
+  ]
+}
