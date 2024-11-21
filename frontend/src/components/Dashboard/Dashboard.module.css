@@ -1,222 +1,206 @@
 @import '../../vars.css';
 
 .dashboardContainer {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
   display: flex;
-  justify-content: start;
-  align-items: center;
-  background: linear-gradient(135deg, #55aad5, #6d55d5);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .mainContent {
-  width: 975px;
-  height: 650px;
-  border-radius: 20px;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-  background: #FFF;
-  border: 3px solid #ccc;
-  flex-shrink: 0;
-  padding: 20px;
-  margin-right: 100px;
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
 }
 
-.header h1 {
-  width: 100%;
-  height: 50px;
-  color: #3a3a3a;
-  font-family: var(--font-roboto);
-  font-size: 36px;
-  font-weight: 700;
-  margin-top: 10px;
-  text-align: left;
-}
-
-.transactionsSection {
-  margin-left: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.transactionsSection h2 {
-  color: var(--color-text);
-  font-family: var(--font-roboto);
-  font-size: 24px;
-  font-weight: 600;
-  line-height: normal;
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.transactionCards {
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.transactionCard {
-  width: 220px;
-  height: 100px;
-  border-radius: 12px;
-  background: #f5f5f5;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
-  padding: 10px;
-}
-
-.transactionCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-}
-
-.transactionCard p {
-  color: #333;
-  font-family: var(--font-roboto);
-  font-size: 20px;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.expense {
-  color: #c0392b;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.income {
-  color: #27ae60;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.barChartSection {
-  flex: 2;
-  margin-right: 20px;
-}
-
-.graphAndBalanceContainer {
+.header {
   display: flex;
   justify-content: space-between;
-  align-items: start;
-  width: 100%;
-  margin-top: 30px;
-  margin-left: -40px;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
-.balanceSection {
-  flex: 1;
-  background-color: #f1f1f1;
-  border: 3px solid #888;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  margin-top: 20px;
-  margin-left: 10px;
-  transition: background-color 0.3s;
+.headerLeft h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.balanceSection:hover {
-  background-color: #f5f5f5;
-}
-
-.balanceSection h2 {
+.subtitle {
   color: var(--color-text);
-  font-family: var(--font-roboto);
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  opacity: 0.8;
 }
 
-.cashFlow {
-  font-family: var(--font-roboto);
-  font-size: 32px;
-  font-weight: 700;
+.addButton {
+  background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s;
 }
 
-.positive {
-  color: #27ae60;
+.addButton:hover {
+  transform: translateY(-2px);
 }
 
-.negative {
-  color: #c0392b;
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-/* Spinner Styles */
-.spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
+.statCard {
+  background: var(--color-dark);
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.statIcon {
+  font-size: 1.5rem;
+  padding: 1rem;
+  background: rgba(163, 73, 164, 0.1);
+  border-radius: 50%;
+}
+
+.statInfo h3 {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.statAmount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionHeader h2 {
+  font-size: 1.2rem;
+  color: var(--color-text);
+}
+
+.viewAllButton {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.transactionsList {
+  background: var(--color-dark);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.transactionItem {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.transactionItem:last-child {
+  border-bottom: none;
+}
+
+.transactionIcon {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border-left-color: #6d55d5;
-  animation: spin 1s ease infinite;
+  background: rgba(163, 73, 164, 0.1);
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.transactionDetails {
+  flex: 1;
+}
+
+.transactionDetails h4 {
+  margin-bottom: 0.25rem;
+}
+
+.transactionDate {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.transactionAmount {
+  font-weight: bold;
+}
+
+.income {
+  color: #4CAF50;
+}
+
+.expense {
+  color: #f44336;
+}
+
+.chartsSection {
+  background: var(--color-dark);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.spinner {
+  border: 4px solid rgba(163, 73, 164, 0.1);
+  border-left-color: var(--color-primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
+  to {
     transform: rotate(360deg);
   }
 }
 
-/* Add styles for savings goals */
-.savingsGoalsSection {
-  margin-top: 40px;
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.savingsGoalContainer {
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 12px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .mainContent {
+    padding: 1rem;
+  }
 }
 
-.savingsGoalContainer h2 {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.goal {
-  margin-bottom: 20px;
-}
-
-.progressBar {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  height: 10px;
-}
-
-.progress {
-  height: 100%;
-  transition: width 0.3s ease;
-}
-
-.progressNearGoal {
-  background-color: #f39c12; /* Orange */
-}
-
-.progressOverGoal {
-  background-color: #c0392b; /* Red */
-}
-
-.goal p {
-  margin-top: 10px;
-}

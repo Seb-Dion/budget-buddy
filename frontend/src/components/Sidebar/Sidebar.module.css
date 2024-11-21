@@ -2,78 +2,145 @@
 @import '../../vars.css';
 
 .sidebar {
-    width: 337px;
-    height: 650px;
-    border-radius: 73px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    background: #FFF;
-    flex-shrink: 0;
-    margin-right: 30px;
-    border: 5px solid #ddd;
-    margin-left: 15px;
+    width: 260px;
+    height: 100vh;
+    background: var(--color-dark);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.Header {
-    font-family: var(--font-roboto);
-    color: var(--color-text);
+.header {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     text-align: center;
 }
-  
+
 .profileSection {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    margin-top: 50px;
-}
-  
-.profileImage {
-    max-width: 100px;
-    max-height: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin-bottom: 2rem;
 }
 
-.profileText {
-    color: var(--color-text);
-    font: bold;
-    font-size: 20px;
+.profileImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-primary);
 }
-  
+
+.profileInfo {
+    flex: 1;
+}
+
+.userName {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.userStatus {
+    font-size: 0.8rem;
+    color: var(--color-success);
+}
+
 .navLinks {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+}
+
+.navLink {
+    display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 50px;
-    margin-right: 10px;
-}
-  
-.navLinks a {
-    color: var(--color-text);
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: var(--color-text-muted);
     text-decoration: none;
-    font-weight: bold;
-    padding:10px;
-    border-radius: 10px;
-    width: 100%;
-    margin-right: 15px;
-    text-align: center;
-    transition: background-color 0.3s;
-}
-  
-.navLinks a:hover {
-    background-color: #ddd;
+    border-radius: 8px;
+    transition: all 0.2s ease;
 }
 
-.navLinks img {
-    visibility: hidden;
+.navLink:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text);
 }
 
-.arrowIcon {
-    margin-bottom: -5px;
+.active {
+    background: var(--gradient-primary);
+    color: white;
 }
 
-.active img {
-    visibility: visible;
+.active:hover {
+    color: white;
+}
+
+.icon {
+    font-size: 1.2rem;
+}
+
+.sidebarFooter {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.signOutLink {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.signOutLink:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-danger);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .navLinks {
+        flex-direction: row;
+        justify-content: space-between;
+        overflow-x: auto;
+    }
+
+    .navLink {
+        flex-direction: column;
+        text-align: center;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .icon {
+        margin-bottom: 0.25rem;
+    }
 }
 
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { FaTrash, FaPlus, FaTags } from 'react-icons/fa';
 import styles from './ExpenseList.module.css';
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -67,32 +68,57 @@ const ExpenseList = () => {
       <Sidebar />
       <main className={styles.mainContent}>
         <header className={styles.header}>
-          <h1>Your Expenses</h1>
+          <div className={styles.headerLeft}>
+            <h1>Expenses</h1>
+            <p className={styles.subtitle}>Manage your expenses by category</p>
+          </div>
+          <button onClick={handleAddExpense} className={styles.addButton}>
+            <FaPlus className={styles.buttonIcon} />
+            Add Expense
+          </button>
         </header>
-        <button onClick={handleAddExpense} className={styles.addButton}>
-          Add Expense
-        </button>
+
         {Object.keys(groupedExpenses).length === 0 ? (
-          <p>No expenses found.</p>
+          <div className={styles.emptyState}>
+            <FaTags className={styles.emptyIcon} />
+            <p>No expenses found.</p>
+            <button onClick={handleAddExpense} className={styles.emptyButton}>
+              Add Your First Expense
+            </button>
+          </div>
         ) : (
           <div className={styles.groupedExpenseList}>
             {Object.keys(groupedExpenses).map(category => (
               <div key={category} className={styles.categoryGroup}>
-                <h3>{category} - Total: ${groupedExpenses[category].total.toFixed(2)}</h3>
-                <ul className={styles.expenseItems}>
+                <div className={styles.categoryHeader}>
+                  <h3>
+                    <span className={styles.categoryName}>{category}</span>
+                    <span className={styles.categoryTotal}>
+                      ${groupedExpenses[category].total.toFixed(2)}
+                    </span>
+                  </h3>
+                </div>
+                <div className={styles.expenseItems}>
                   {groupedExpenses[category].items.map(expense => (
-                    <li key={expense.id} className={styles.expenseItem}>
-                      <strong>Amount:</strong> ${expense.amount.toFixed(2)} <br />
-                      <strong>Date:</strong> {expense.date} <br />
+                    <div key={expense.id} className={styles.expenseItem}>
+                      <div className={styles.expenseInfo}>
+                        <div className={styles.expenseAmount}>
+                          ${expense.amount.toFixed(2)}
+                        </div>
+                        <div className={styles.expenseDate}>
+                          {new Date(expense.date).toLocaleDateString()}
+                        </div>
+                      </div>
                       <button
                         onClick={() => handleDeleteExpense(expense.id)}
                         className={styles.deleteButton}
+                        aria-label="Delete expense"
                       >
-                        Delete
+                        <FaTrash />
                       </button>
-                    </li>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             ))}
           </div>

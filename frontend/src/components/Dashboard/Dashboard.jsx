@@ -81,40 +81,91 @@ const Dashboard = () => {
     <div className={styles.dashboardContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
-        <ToastContainer />
+        <ToastContainer theme="dark" />
         <header className={styles.header}>
-          <h1>Dashboard</h1>
+          <div className={styles.headerLeft}>
+            <h1>Welcome Back</h1>
+            <p className={styles.subtitle}>{getMonthName()}'s Overview</p>
+          </div>
+          <div className={styles.headerRight}>
+            <button className={styles.addButton}>
+              <span>+</span> Add Transaction
+            </button>
+          </div>
         </header>
+
         {loading ? (
           <div className={styles.spinner}></div>
         ) : (
           <>
-            <section className={styles.transactionsSection}>
-              <h2>Recent Transactions</h2>
-              <div className={styles.transactionCards}>
-                {recentTransactions.length > 0 ? (
-                  recentTransactions.map((transaction, index) => (
-                    <div key={index} className={styles.transactionCard}>
-                      <span className={`${transaction.type === 'income' ? styles.income : styles.expense}`}>
-                        ${transaction.amount.toFixed(2)}
-                      </span>
-                      <p className={styles.transactionCategory}>{transaction.type === 'income' ? transaction.source : transaction.category}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p>No recent transactions found.</p>
-                )}
+            <div className={styles.statsGrid}>
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>💰</div>
+                <div className={styles.statInfo}>
+                  <h3>Cash Flow</h3>
+                  <p className={`${styles.statAmount} ${cashFlow >= 0 ? styles.positive : styles.negative}`}>
+                    ${Math.abs(cashFlow).toFixed(2)}
+                    <span className={styles.indicator}>{cashFlow >= 0 ? '↑' : '↓'}</span>
+                  </p>
+                </div>
               </div>
-            </section>
-            <div className={styles.graphAndBalanceContainer}>
-              <section className={styles.barChartSection}>
-                <TopSpendingCategories />
+
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>📊</div>
+                <div className={styles.statInfo}>
+                  <h3>Total Budget</h3>
+                  <p className={styles.statAmount}>
+                    ${budgetTotal.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+
+              <div className={styles.statCard}>
+                <div className={styles.statIcon}>💳</div>
+                <div className={styles.statInfo}>
+                  <h3>Total Spent</h3>
+                  <p className={styles.statAmount}>
+                    ${budgetUsed.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.mainGrid}>
+              <section className={styles.transactionsSection}>
+                <div className={styles.sectionHeader}>
+                  <h2>Recent Transactions</h2>
+                  <button className={styles.viewAllButton}>View All</button>
+                </div>
+                <div className={styles.transactionsList}>
+                  {recentTransactions.length > 0 ? (
+                    recentTransactions.map((transaction, index) => (
+                      <div key={index} className={styles.transactionItem}>
+                        <div className={styles.transactionIcon}>
+                          {transaction.type === 'income' ? '↑' : '↓'}
+                        </div>
+                        <div className={styles.transactionDetails}>
+                          <h4>{transaction.type === 'income' ? transaction.source : transaction.category}</h4>
+                          <p className={styles.transactionDate}>
+                            {new Date(transaction.date).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <span className={`${styles.transactionAmount} ${transaction.type === 'income' ? styles.income : styles.expense}`}>
+                          {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className={styles.noData}>No recent transactions found.</p>
+                  )}
+                </div>
               </section>
-              <section className={styles.balanceSection}>
-                <h2>{getMonthName()}'s Balance</h2>
-                <p className={`${styles.cashFlow} ${cashFlow >= 0 ? styles.positive : styles.negative}`}>
-                  ${cashFlow.toFixed(2)}
-                </p>
+
+              <section className={styles.chartsSection}>
+                <div className={styles.sectionHeader}>
+                  <h2>Spending Overview</h2>
+                </div>
+                <TopSpendingCategories />
               </section>
             </div>
           </>

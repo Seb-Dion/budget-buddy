@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import { FaReceipt, FaDollarSign, FaCalendar, FaTags } from "react-icons/fa";
 import styles from "./AddExpense.module.css";
 import Sidebar from "../Sidebar/Sidebar";
 
@@ -81,53 +81,83 @@ const AddExpense = () => {
     <div className={styles.addExpenseContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
-        <ToastContainer />
         <header className={styles.header}>
-          <h1>Add Expense</h1>
-        </header>
-        <form onSubmit={handleAddExpense} className={styles.form}>
-          <div className={styles.dropdownContainer}>
-            <input
-              type="text"
-              placeholder="Category"
-              value={category}
-              onChange={handleCategoryChange}
-              className={styles.input}
-              required
-            />
-            {filteredCategories.length > 0 && (
-              <ul className={styles.dropdownList}>
-                {filteredCategories.map((cat, index) => (
-                  <li
-                    key={index}
-                    onClick={() => handleSelectCategory(cat)}
-                    className={styles.dropdownItem}
-                  >
-                    {cat}
-                  </li>
-                ))}
-              </ul>
-            )}
+          <div className={styles.headerContent}>
+            <h1>Add Expense</h1>
+            <p className={styles.subtitle}>Track your spending by adding a new expense</p>
           </div>
-          <input
-            type="number"
-            placeholder="Amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className={styles.input}
-            required
-          />
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className={styles.input}
-            required
-          />
-          <button type="submit" className={styles.button}>
-            Add Expense
-          </button>
-        </form>
+        </header>
+
+        <div className={styles.formCard}>
+          <form onSubmit={handleAddExpense} className={styles.form}>
+            <div className={styles.inputGroup}>
+              <label htmlFor="category">Category</label>
+              <div className={styles.inputWrapper}>
+                <FaTags className={styles.inputIcon} />
+                <input
+                  id="category"
+                  type="text"
+                  placeholder="Enter or select category"
+                  value={category}
+                  onChange={handleCategoryChange}
+                  className={styles.input}
+                  required
+                />
+              </div>
+              {filteredCategories.length > 0 && (
+                <ul className={styles.dropdownList}>
+                  {filteredCategories.map((cat, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleSelectCategory(cat)}
+                      className={styles.dropdownItem}
+                    >
+                      <FaReceipt className={styles.dropdownIcon} />
+                      {cat}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="amount">Amount</label>
+              <div className={styles.inputWrapper}>
+                <FaDollarSign className={styles.inputIcon} />
+                <input
+                  id="amount"
+                  type="number"
+                  placeholder="Enter amount"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className={styles.input}
+                  required
+                  step="0.01"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="date">Date</label>
+              <div className={styles.inputWrapper}>
+                <FaCalendar className={styles.inputIcon} />
+                <input
+                  id="date"
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className={styles.input}
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" className={styles.submitButton}>
+              Add Expense
+            </button>
+          </form>
+        </div>
       </main>
     </div>
   );

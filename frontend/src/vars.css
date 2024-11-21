@@ -1,9 +1,34 @@
 :root {
-    --color-text: #3a3a3a;
-    --color-primary: #a349a4;
-    --color-secondary: #703070;
-    --color-dark: #333333;
-    --color-bg: #1a1a1a;
-
-    --font-roboto: "Roboto";
+    /* Main Colors */
+    --color-primary: #a349a4;    /* Purple - your brand color */
+    --color-secondary: #703070;  /* Darker purple - for depth */
+    
+    /* Text Colors */
+    --color-text: #2d3748;      /* Dark gray - for main text */
+    --color-text-muted: #718096; /* Medium gray - for secondary text */
+    
+    /* Background Colors */
+    --color-bg: #f8fafc;        /* Very light gray - main background */
+    --color-dark: #ffffff;      /* White - for cards and elevated surfaces */
+    
+    /* Accent Colors */
+    --color-success: #059669;   /* Green - for positive numbers/income */
+    --color-danger: #dc2626;    /* Red - for negative numbers/expenses */
+    --color-warning: #d97706;   /* Amber - for warnings/alerts */
+    
+    /* Subtle Colors */
+    --color-purple-50: #faf5ff;  /* Very light purple - for hover states */
+    --color-purple-100: #f3e8ff; /* Light purple - for active states */
+    --color-border: #e2e8f0;     /* Light gray - for borders */
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    --gradient-purple: linear-gradient(135deg, #a349a4, #703070);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    /* Font */
+    --font-roboto: "Roboto", system-ui, -apple-system, sans-serif;
 }

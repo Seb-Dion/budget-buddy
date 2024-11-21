@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
+import { FaUser, FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -46,48 +47,123 @@ const Login = () => {
 
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.title}>Budget Buddy</div>
-            <div className={styles.subTitle}>An all in one expense tracker.</div>
+            <div className={styles.leftPanel}>
+                <div className={styles.brandContent}>
+                    <h1 className={styles.logo}>Budget Buddy</h1>
+                    <p className={styles.tagline}>Smart money management starts here</p>
+                    
+                    <div className={styles.features}>
+                        <div className={styles.featureItem}>
+                            <div className={styles.featureIcon}>📊</div>
+                            <div className={styles.featureText}>
+                                <h3>Track Expenses</h3>
+                                <p>Monitor your spending habits with ease</p>
+                            </div>
+                        </div>
+                        
+                        <div className={styles.featureItem}>
+                            <div className={styles.featureIcon}>💰</div>
+                            <div className={styles.featureText}>
+                                <h3>Set Budgets</h3>
+                                <p>Create and manage custom budgets</p>
+                            </div>
+                        </div>
+                        
+                        <div className={styles.featureItem}>
+                            <div className={styles.featureIcon}>📈</div>
+                            <div className={styles.featureText}>
+                                <h3>Visual Insights</h3>
+                                <p>See your finances through clear visualizations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className={styles.formContainer}>
-                <h2 className={styles.heading}>{isSignUp ? 'Sign Up' : 'Login'}</h2>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-                    {isSignUp && (
-                        <input
-                            type="text"
-                            placeholder='Username'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className={styles.input}
-                            required
-                        />
+                <div className={styles.formWrapper}>
+                    <h2 className={styles.formTitle}>
+                        {isSignUp ? 'Create Account' : 'Welcome Back'}
+                    </h2>
+                    <p className={styles.formSubtitle}>
+                        {isSignUp 
+                            ? 'Start your journey to better financial management' 
+                            : 'Sign in to continue to your dashboard'}
+                    </p>
+
+                    {errorMessage && (
+                        <div className={styles.errorMessage}>
+                            {errorMessage}
+                        </div>
                     )}
-                    <input
-                        type="email"
-                        placeholder='Email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className={styles.input}
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder='Password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className={styles.input}
-                        required
-                    />
-                    <button type="submit" className={styles.button}>
-                        {isSignUp ? 'Sign Up' : 'Sign In'}
-                    </button>
-                </form>
-                <p className={styles.toggleText}>
-                    {isSignUp ? "Already have an account?" : "Don't have an account?"}{' '}
-                    <span onClick={handleToggle} className={styles.toggleLink}>
-                        {isSignUp ? 'Login' : 'Sign Up'}
-                    </span>
-                </p>
+
+                    <form onSubmit={handleSubmit} className={styles.form}>
+                        {isSignUp && (
+                            <div className={styles.inputGroup}>
+                                <FaUser className={styles.inputIcon} />
+                                <input
+                                    type="text"
+                                    placeholder="Username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        )}
+
+                        <div className={styles.inputGroup}>
+                            <FaEnvelope className={styles.inputIcon} />
+                            <input
+                                type="email"
+                                placeholder="Email address"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.inputGroup}>
+                            <FaLock className={styles.inputIcon} />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        {!isSignUp && (
+                            <div className={styles.forgotPassword}>
+                                <a href="#">Forgot password?</a>
+                            </div>
+                        )}
+
+                        <button type="submit" className={styles.submitButton}>
+                            {isSignUp ? 'Create Account' : 'Sign In'}
+                        </button>
+
+                        <div className={styles.divider}>
+                            <span>or continue with</span>
+                        </div>
+
+                        <button type="button" className={styles.googleButton}>
+                            <FaGoogle />
+                            <span>Google</span>
+                        </button>
+                    </form>
+
+                    <p className={styles.togglePrompt}>
+                        {isSignUp ? 'Already have an account?' : "Don't have an account?"}
+                        <button 
+                            type="button"
+                            onClick={handleToggle}
+                            className={styles.toggleButton}
+                        >
+                            {isSignUp ? 'Sign In' : 'Sign Up'}
+                        </button>
+                    </p>
+                </div>
             </div>
         </div>
     );

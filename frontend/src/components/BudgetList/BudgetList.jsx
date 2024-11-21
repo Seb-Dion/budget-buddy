@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify'; // Import Toastify components
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import { toast } from 'react-toastify';
+import { FaPlus, FaPiggyBank, FaTrash, FaChartPie } from 'react-icons/fa';
 import styles from './BudgetList.module.css';
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -48,33 +48,91 @@ const BudgetList = () => {
     }
   };
 
+  const calculateProgress = (spent, limit) => {
+    const percentage = (spent / limit) * 100;
+    return Math.min(percentage, 100); // Cap at 100%
+  };
+
   return (
     <div className={styles.budgetListContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
-        <ToastContainer /> {/* Add ToastContainer for notifications */}
         <header className={styles.header}>
-          <h1>Your Budgets</h1>
+          <div className={styles.headerLeft}>
+            <h1>Budget Overview</h1>
+            <p className={styles.subtitle}>Manage your spending limits and track your progress</p>
+          </div>
+          <button onClick={handleAddBudget} className={styles.addButton}>
+            <FaPlus className={styles.buttonIcon} />
+            Create Budget
+          </button>
         </header>
-        <button onClick={handleAddBudget} className={styles.addButton}>
-          Add Budget
-        </button>
+
         {budgets.length === 0 ? (
-          <p>No budgets found.</p>
+          <div className={styles.emptyState}>
+            <FaPiggyBank className={styles.emptyIcon} />
+            <h3>No Budgets Set</h3>
+            <p>Start managing your expenses by creating your first budget</p>
+            <button onClick={handleAddBudget} className={styles.emptyButton}>
+              Create Your First Budget
+            </button>
+          </div>
         ) : (
-          <div className={styles.budgetList}>
-            {budgets.map((budget) => (
-              <div key={budget.id} className={styles.budgetItem}>
-                <h3>{budget.category} - ${budget.limit}</h3>
-                <p>Month: {budget.month}</p>
-                <button
-                  onClick={() => handleDeleteBudget(budget.id)}
-                  className={styles.deleteButton}
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
+          <div className={styles.budgetGrid}>
+            {budgets.map((budget) => {
+              const progress = calculateProgress(budget.spent || 0, budget.limit);
+              const isOverBudget = progress >= 100;
+
+              return (
+                <div key={budget.id} className={styles.budgetCard}>
+                  <div className={styles.cardHeader}>
+                    <div className={styles.categoryIcon}>
+                      <FaChartPie />
+                    </div>
+                    <div className={styles.categoryInfo}>
+                      <h3>{budget.category}</h3>
+                      <p className={styles.monthLabel}>{budget.month}</p>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteBudget(budget.id)}
+                      className={styles.deleteButton}
+                      aria-label="Delete budget"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+
+                  <div className={styles.budgetDetails}>
+                    <div className={styles.amounts}>
+                      <div className={styles.spent}>
+                        <span className={styles.label}>Spent</span>
+                        <span className={styles.value}>
+                          ${budget.spent?.toFixed(2) || '0.00'}
+                        </span>
+                      </div>
+                      <div className={styles.limit}>
+                        <span className={styles.label}>Limit</span>
+                        <span className={styles.value}>${budget.limit.toFixed(2)}</span>
+                      </div>
+                    </div>
+
+                    <div className={styles.progressContainer}>
+                      <div 
+                        className={`${styles.progressBar} ${isOverBudget ? styles.overBudget : ''}`}
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+
+                    <div className={styles.progressLabel}>
+                      <span>{progress.toFixed(1)}% used</span>
+                      {isOverBudget && (
+                        <span className={styles.overBudgetLabel}>Over Budget!</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </main>

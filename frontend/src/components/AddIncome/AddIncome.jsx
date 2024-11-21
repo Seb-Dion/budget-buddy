@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify'; // Import Toastify components
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import { toast } from 'react-toastify';
+import { FaMoneyBillWave, FaDollarSign, FaCalendar } from 'react-icons/fa';
 import styles from './AddIncome.module.css';
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -45,38 +45,82 @@ const AddIncome = () => {
     <div className={styles.addIncomeContainer}>
       <Sidebar />
       <main className={styles.mainContent}>
-        <ToastContainer /> {/* Add ToastContainer for notifications */}
         <header className={styles.header}>
-          <h1>Add Income</h1>
+          <div className={styles.headerContent}>
+            <h1>Add Income</h1>
+            <p className={styles.subtitle}>Record your earnings and keep track of your income sources</p>
+          </div>
         </header>
-        <form onSubmit={handleAddIncome} className={styles.form}>
-          <input
-            type="text"
-            placeholder="Source"
-            value={source}
-            onChange={(e) => setSource(e.target.value)}
-            className={styles.input}
-            required
-          />
-          <input
-            type="number"
-            placeholder="Amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className={styles.input}
-            required
-          />
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className={styles.input}
-            required
-          />
-          <button type="submit" className={styles.button}>
-            Add Income
-          </button>
-        </form>
+
+        <div className={styles.formCard}>
+          <div className={styles.formIcon}>
+            <FaMoneyBillWave />
+          </div>
+          
+          <form onSubmit={handleAddIncome} className={styles.form}>
+            <div className={styles.inputGroup}>
+              <label htmlFor="source">Income Source</label>
+              <div className={styles.inputWrapper}>
+                <FaMoneyBillWave className={styles.inputIcon} />
+                <input
+                  id="source"
+                  type="text"
+                  placeholder="e.g., Salary, Freelance, Investment"
+                  value={source}
+                  onChange={(e) => setSource(e.target.value)}
+                  className={styles.input}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="amount">Amount</label>
+              <div className={styles.inputWrapper}>
+                <FaDollarSign className={styles.inputIcon} />
+                <input
+                  id="amount"
+                  type="number"
+                  placeholder="Enter amount"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className={styles.input}
+                  required
+                  step="0.01"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="date">Date Received</label>
+              <div className={styles.inputWrapper}>
+                <FaCalendar className={styles.inputIcon} />
+                <input
+                  id="date"
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className={styles.input}
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" className={styles.submitButton}>
+              Add Income Record
+            </button>
+          </form>
+
+          <div className={styles.formTips}>
+            <h3>Tips for Income Tracking</h3>
+            <ul>
+              <li>Be specific with your income sources for better tracking</li>
+              <li>Include all types of income: regular and one-time payments</li>
+              <li>Use the actual date when the income was received</li>
+            </ul>
+          </div>
+        </div>
       </main>
     </div>
   );
