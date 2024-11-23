@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
-import { FaUser, FaEnvelope, FaLock, FaGoogle } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaGoogle, FaChartLine, FaPiggyBank, FaChartBar } from 'react-icons/fa';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -50,30 +50,36 @@ const Login = () => {
             <div className={styles.leftPanel}>
                 <div className={styles.brandContent}>
                     <h1 className={styles.logo}>Budget Buddy</h1>
-                    <p className={styles.tagline}>Smart money management starts here</p>
+                    <p className={styles.tagline}>Your Financial Journey Starts Here</p>
                     
                     <div className={styles.features}>
                         <div className={styles.featureItem}>
-                            <div className={styles.featureIcon}>📊</div>
+                            <div className={styles.featureIcon}>
+                                <FaChartLine className={styles.icon} />
+                            </div>
                             <div className={styles.featureText}>
-                                <h3>Track Expenses</h3>
-                                <p>Monitor your spending habits with ease</p>
+                                <h3>Smart Tracking</h3>
+                                <p>Real-time insights into your spending patterns</p>
                             </div>
                         </div>
                         
                         <div className={styles.featureItem}>
-                            <div className={styles.featureIcon}>💰</div>
+                            <div className={styles.featureIcon}>
+                                <FaPiggyBank className={styles.icon} />
+                            </div>
                             <div className={styles.featureText}>
-                                <h3>Set Budgets</h3>
-                                <p>Create and manage custom budgets</p>
+                                <h3>Savings Goals</h3>
+                                <p>Set and achieve your financial targets</p>
                             </div>
                         </div>
                         
                         <div className={styles.featureItem}>
-                            <div className={styles.featureIcon}>📈</div>
+                            <div className={styles.featureIcon}>
+                                <FaChartBar className={styles.icon} />
+                            </div>
                             <div className={styles.featureText}>
-                                <h3>Visual Insights</h3>
-                                <p>See your finances through clear visualizations</p>
+                                <h3>Rich Analytics</h3>
+                                <p>Beautiful charts and detailed reports</p>
                             </div>
                         </div>
                     </div>
@@ -82,14 +88,16 @@ const Login = () => {
 
             <div className={styles.formContainer}>
                 <div className={styles.formWrapper}>
-                    <h2 className={styles.formTitle}>
-                        {isSignUp ? 'Create Account' : 'Welcome Back'}
-                    </h2>
-                    <p className={styles.formSubtitle}>
-                        {isSignUp 
-                            ? 'Start your journey to better financial management' 
-                            : 'Sign in to continue to your dashboard'}
-                    </p>
+                    <div className={styles.formHeader}>
+                        <h2 className={styles.formTitle}>
+                            {isSignUp ? '✨ Create Account' : '👋 Welcome Back'}
+                        </h2>
+                        <p className={styles.formSubtitle}>
+                            {isSignUp 
+                                ? 'Begin your journey to financial freedom' 
+                                : 'We\'re excited to see you again'}
+                        </p>
+                    </div>
 
                     {errorMessage && (
                         <div className={styles.errorMessage}>

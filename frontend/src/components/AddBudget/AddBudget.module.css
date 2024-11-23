@@ -167,6 +167,25 @@
   font-weight: bold;
 }
 
+.message {
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+  width: 100%;
+}
+
+.success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.error {
+  background-color: #f44336;
+  color: white;
+}
+
 @media (max-width: 768px) {
   .mainContent {
     padding: 1rem;
@@ -186,4 +205,12 @@
     font-size: 1.25rem;
     top: -20px;
   }
+}
+
+.formContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
 }

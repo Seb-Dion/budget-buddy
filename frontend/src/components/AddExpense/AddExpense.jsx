@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
+import { formatDate } from '../../utils/helpers';
 import { FaReceipt, FaDollarSign, FaCalendar, FaTags } from "react-icons/fa";
 import styles from "./AddExpense.module.css";
 import Sidebar from "../Sidebar/Sidebar";
@@ -11,6 +12,7 @@ const AddExpense = () => {
   const [date, setDate] = useState("");
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -33,33 +35,48 @@ const AddExpense = () => {
 
   const handleAddExpense = async (e) => {
     e.preventDefault();
+    setMessage({ text: "", type: "" });
+
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        toast.error("User is not authenticated.");
+        setMessage({ text: "Please log in again", type: "error" });
         return;
       }
-      const response = await axios.post(
-        "/budget/expenses",
-        { category, amount: parseFloat(amount), date },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
 
-      // Show appropriate messages based on budget status
-      if (response.data.status === "over_budget") {
-        toast.warning(response.data.message);
-      } else if (response.data.status === "close_to_budget") {
-        toast.info(response.data.message);
-      } else {
-        toast.success(response.data.message);
+      if (!category || !amount || !date) {
+        setMessage({ text: "Please fill in all fields", type: "error" });
+        return;
       }
 
-      setCategory("");
-      setAmount("");
-      setDate("");
+      const formattedDate = formatDate(date);
+
+      const response = await axios.post(
+        "/budget/expenses",
+        { 
+          category, 
+          amount: parseFloat(amount), 
+          date: formattedDate
+        },
+        { 
+          headers: { Authorization: `Bearer ${token}` } 
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setCategory("");
+        setAmount("");
+        setDate("");
+        setMessage({ text: "Expense added successfully!", type: "success" });
+        
+        setTimeout(() => {
+          setMessage({ text: "", type: "" });
+        }, 3000);
+      }
+
     } catch (error) {
-      console.error("Error adding expense:", error);
-      toast.error("Failed to add expense. Please try again.");
+      console.error("Error:", error);
+      setMessage({ text: "Failed to add expense", type: "error" });
     }
   };
 
@@ -158,6 +175,16 @@ const AddExpense = () => {
             </button>
           </form>
         </div>
+
+        {message.text && (
+          <div 
+            className={`${styles.message} ${
+              message.type === 'success' ? styles.success : styles.error
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
       </main>
     </div>
   );

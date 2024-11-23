@@ -2,19 +2,28 @@
 
 /* Container for the entire page */
 .pageContainer {
-  display: flex;
   min-height: 100vh;
-  background: var(--color-bg);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  background: var(--gradient-purple) !important;  /* Using your predefined gradient */
+  color: white !important;
+  position: fixed;  /* Try fixed instead of absolute */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;  /* Ensure proper stacking */
 }
 
 .leftPanel {
-  flex: 1;
-  background: var(--gradient-primary);
   padding: 3rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white !important;
 }
 
 .brandContent {
@@ -22,34 +31,47 @@
 }
 
 .logo {
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-size: 3rem;
   margin-bottom: 1rem;
+  color: white;
+  animation: fadeSlideDown 0.8s ease-out;
 }
 
 .tagline {
   font-size: 1.25rem;
   opacity: 0.9;
   margin-bottom: 3rem;
+  animation: fadeSlideDown 0.8s ease-out 0.2s backwards;
 }
 
 .features {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  margin-top: 4rem;
 }
 
 .featureItem {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+  animation: fadeSlideIn 0.6s ease-out backwards;
+}
+
+.featureItem:nth-child(1) { animation-delay: 0.4s; }
+.featureItem:nth-child(2) { animation-delay: 0.6s; }
+.featureItem:nth-child(3) { animation-delay: 0.8s; }
+
+.featureItem:hover {
+  transform: translateX(10px) scale(1.02);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .featureIcon {
   font-size: 1.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 1rem;
-  border-radius: 12px;
+  margin-right: 1.5rem;
 }
 
 .featureText h3 {
@@ -63,17 +85,23 @@
 }
 
 .formContainer {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  background: var(--color-dark);
+  color: var(--color-text);
+  backdrop-filter: blur(10px);
+  border-radius: 24px 0 0 24px;
+  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .formWrapper {
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
   padding: 2rem;
+  animation: fadeSlideUp 0.8s ease-out;
+  color: var(--color-text);
 }
 
 .formTitle {
@@ -95,6 +123,7 @@
 
 .inputGroup {
   position: relative;
+  margin-bottom: 1.5rem;
 }
 
 .inputIcon {
@@ -107,19 +136,19 @@
 
 .inputGroup input {
   width: 100%;
-  padding: 0.875rem 1rem 0.875rem 2.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  font-size: 0.95rem;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  transform-origin: left;
   color: var(--color-text);
   background: white;
-  transition: all 0.2s ease;
 }
 
 .inputGroup input:focus {
-  outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(163, 73, 164, 0.1);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+  transform: scale(1.02);
 }
 
 .forgotPassword {
@@ -134,20 +163,41 @@
 }
 
 .submitButton {
-  padding: 0.875rem;
-  background: var(--gradient-primary);
+  width: 100%;
+  padding: 1rem;
+  background: var(--color-primary);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: translateX(-100%);
+}
+
+.submitButton:hover::after {
+  transform: translateX(100%);
+  transition: transform 0.8s ease;
 }
 
 .submitButton:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  background: var(--color-primary-dark);
 }
 
 .divider {
@@ -172,22 +222,19 @@
 
 .googleButton {
   width: 100%;
-  padding: 0.875rem;
+  padding: 1rem;
   background: white;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: var(--color-text);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .googleButton:hover {
-  background: var(--color-purple-50);
+  border-color: var(--color-primary-light);
 }
 
 .togglePrompt {
@@ -247,4 +294,67 @@
   .formWrapper {
     padding: 1rem;
   }
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.inputGroup.error input {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.submitButton.loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.submitButton.loading::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

@@ -21,37 +21,68 @@ const Dashboard = () => {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
   
-      // Fetch data from the backend
+      // Fetch all data
       const expensesResponse = await axios.get('/budget/expenses', { headers });
       const incomeResponse = await axios.get('/budget/income', { headers });
       const budgetsResponse = await axios.get('/budget/budgets', { headers });
       const cashFlowResponse = await axios.get('/budget/cash-flow', { headers });
   
-      // Get expenses and income
-      const expenses = expensesResponse.data.expenses.map(exp => ({ ...exp, type: 'expense' }));
-      const income = incomeResponse.data.income.map(inc => ({ ...inc, type: 'income' }));
+      // Get current month's data for calculations
+      const now = new Date();
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
   
-      // Combine and sort transactions
-      const transactions = [...expenses, ...income].sort((a, b) => new Date(b.date) - new Date(a.date));
-      setRecentTransactions(transactions.slice(0, 3));
+      // Format all transactions with type
+      const allExpenses = expensesResponse.data.expenses.map(exp => ({
+        ...exp,
+        type: 'expense',
+        amount: exp.amount,
+        date: new Date(exp.date)
+      }));
   
-      // Calculate total used budget for each category
+      const allIncome = incomeResponse.data.income.map(inc => ({
+        ...inc,
+        type: 'income',
+        amount: inc.amount,
+        date: new Date(inc.date)
+      }));
+  
+      // Combine and sort all transactions
+      const allTransactions = [...allExpenses, ...allIncome]
+        .sort((a, b) => b.date - a.date)
+        .slice(0, 3);  // Get only the 3 most recent
+  
+      setRecentTransactions(allTransactions);
+  
+      // Calculate total budget for current month
+      const totalBudget = budgetsResponse.data.budgets.reduce((sum, budget) => 
+        sum + budget.limit, 0
+      );
+      setBudgetTotal(totalBudget);
+  
+      // Calculate total spent for current month
+      const totalSpent = allExpenses.reduce((sum, expense) => 
+        sum + expense.amount, 0
+      );
+      setBudgetUsed(totalSpent);
+  
+      // Calculate budget usage for current month
       const budgetUsage = {};
-      expenses.forEach(exp => {
+      allExpenses.forEach(exp => {
         if (!budgetUsage[exp.category]) {
           budgetUsage[exp.category] = 0;
         }
         budgetUsage[exp.category] += exp.amount;
       });
   
-      // Store budget data in state instead of showing notifications
+      // Set remaining state
       setBudgets(budgetsResponse.data.budgets);
       setBudgetUsage(budgetUsage);
-  
       setCashFlow(cashFlowResponse.data.cash_flow);
   
     } catch (error) {
       console.error('Error fetching data:', error);
+      toast.error('Failed to fetch dashboard data');
     } finally {
       setLoading(false);
     }
@@ -88,9 +119,6 @@ const Dashboard = () => {
             <p className={styles.subtitle}>{getMonthName()}'s Overview</p>
           </div>
           <div className={styles.headerRight}>
-            <button className={styles.addButton}>
-              <span>+</span> Add Transaction
-            </button>
           </div>
         </header>
 
@@ -114,6 +142,7 @@ const Dashboard = () => {
                 <div className={styles.statIcon}>📊</div>
                 <div className={styles.statInfo}>
                   <h3>Total Budget</h3>
+                  
                   <p className={styles.statAmount}>
                     ${budgetTotal.toFixed(2)}
                   </p>
@@ -135,7 +164,6 @@ const Dashboard = () => {
               <section className={styles.transactionsSection}>
                 <div className={styles.sectionHeader}>
                   <h2>Recent Transactions</h2>
-                  <button className={styles.viewAllButton}>View All</button>
                 </div>
                 <div className={styles.transactionsList}>
                   {recentTransactions.length > 0 ? (

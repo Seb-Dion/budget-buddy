@@ -4,6 +4,7 @@ from models import Expense, Income, Budget
 from datetime import datetime
 from app import db
 from calendar import monthrange
+from sqlalchemy import func
 
 budget_bp = Blueprint('budget', __name__)
 
@@ -18,37 +19,71 @@ def add_expense():
         return jsonify({"error": "Category, amount, and date are required"}), 400
 
     try:
+        expense_date = datetime.strptime(data['date'], '%Y-%m-%d')
+        month = expense_date.strftime('%Y-%m')
+        amount = float(data['amount'])
+
+        # Create new expense
         new_expense = Expense(
             user_id=user_id,
             category=data['category'],
-            amount=float(data['amount']),
-            date=datetime.strptime(data['date'], '%Y-%m-%d')
+            amount=amount,
+            date=expense_date
         )
 
-        # Check if there's a budget for this category in the current month
-        expense_date = datetime.strptime(data['date'], '%Y-%m-%d')
-        month = expense_date.strftime('%Y-%m')
-        budget = Budget.query.filter_by(user_id=user_id, category=data['category'], month=month).first()
+        # Find the corresponding budget for this category and month
+        budget = Budget.query.filter_by(
+            user_id=user_id,
+            category=data['category'],
+            month=month
+        ).first()
 
         if budget:
             # Calculate total expenses for this category and month
-            total_expenses = sum(exp.amount for exp in Expense.query.filter_by(
-                user_id=user_id, category=data['category']
-            ).filter(Expense.date.between(f"{month}-01", f"{month}-31")).all())
+            start_date = f"{month}-01"
+            _, last_day = monthrange(expense_date.year, expense_date.month)
+            end_date = f"{month}-{last_day}"
 
-            # Check against budget limits
-            if total_expenses + float(data['amount']) > budget.limit:
-                db.session.add(new_expense)
-                db.session.commit()
-                return jsonify({"message": "Expense added, but you have exceeded your budget!", "status": "over_budget"}), 201
-            elif total_expenses + float(data['amount']) >= 0.8 * budget.limit:
-                db.session.add(new_expense)
-                db.session.commit()
-                return jsonify({"message": "Expense added. You are close to your budget limit!", "status": "close_to_budget"}), 201
+            total_expenses = db.session.query(func.sum(Expense.amount)).filter(
+                Expense.user_id == user_id,
+                Expense.category == data['category'],
+                Expense.date.between(start_date, end_date)
+            ).scalar() or 0
+
+            # Add the new expense amount
+            total_expenses += amount
+
+            # Check against budget limits and update status
+            status = "ok"
+            message = "Expense added successfully!"
+            
+            if total_expenses > budget.limit:
+                status = "over_budget"
+                message = "Expense added, but you have exceeded your budget!"
+            elif total_expenses >= 0.8 * budget.limit:
+                status = "close_to_budget"
+                message = "Expense added. You are close to your budget limit!"
 
         db.session.add(new_expense)
         db.session.commit()
-        return jsonify({"message": "Expense added successfully!", "status": "ok"}), 201
+
+        # Return updated budget information along with the status
+        response_data = {
+            "message": message,
+            "status": status if budget else "ok",
+            "budget_info": None
+        }
+
+        if budget:
+            response_data["budget_info"] = {
+                "category": budget.category,
+                "limit": budget.limit,
+                "spent": total_expenses,
+                "remaining": budget.limit - total_expenses
+            }
+
+        return jsonify(response_data), 201
+
     except ValueError:
         return jsonify({"error": "Invalid data format"}), 400
 
@@ -75,12 +110,51 @@ def delete_expense(expense_id):
     user_id = get_jwt_identity()
     expense = Expense.query.filter_by(id=expense_id, user_id=user_id).first()
 
-    if expense:
+    if not expense:
+        return jsonify({"error": "Expense not found."}), 404
+
+    try:
+        # Get the month of the expense
+        month = expense.date.strftime('%Y-%m')
+
+        # Find the corresponding budget
+        budget = Budget.query.filter_by(
+            user_id=user_id,
+            category=expense.category,
+            month=month
+        ).first()
+
+        # Delete the expense
         db.session.delete(expense)
         db.session.commit()
-        return jsonify({"message": "Expense deleted successfully!"}), 200
 
-    return jsonify({"error": "Expense not found."}), 404
+        response_data = {"message": "Expense deleted successfully!"}
+
+        # If there was a budget, calculate and return updated budget info
+        if budget:
+            # Calculate new total after deletion
+            start_date = f"{month}-01"
+            _, last_day = monthrange(expense.date.year, expense.date.month)
+            end_date = f"{month}-{last_day}"
+
+            total_expenses = db.session.query(func.sum(Expense.amount)).filter(
+                Expense.user_id == user_id,
+                Expense.category == expense.category,
+                Expense.date.between(start_date, end_date)
+            ).scalar() or 0
+
+            response_data["budget_info"] = {
+                "category": budget.category,
+                "limit": budget.limit,
+                "spent": total_expenses,
+                "remaining": budget.limit - total_expenses
+            }
+
+        return jsonify(response_data), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Failed to delete expense."}), 500
 
 # Route to add a new income
 @budget_bp.route('/income', methods=['POST'])
@@ -175,12 +249,28 @@ def get_budgets():
     user_id = get_jwt_identity()
     budgets = Budget.query.filter_by(user_id=user_id).all()
 
-    budget_list = [{
-        'id': budget.id,
-        'category': budget.category,
-        'limit': budget.limit,
-        'month': budget.month
-    } for budget in budgets]
+    budget_list = []
+    for budget in budgets:
+        # Calculate total expenses for this budget's month
+        start_date = f"{budget.month}-01"
+        month_date = datetime.strptime(budget.month, '%Y-%m')
+        _, last_day = monthrange(month_date.year, month_date.month)
+        end_date = f"{budget.month}-{last_day}"
+
+        total_spent = db.session.query(func.sum(Expense.amount)).filter(
+            Expense.user_id == user_id,
+            Expense.category == budget.category,
+            Expense.date.between(start_date, end_date)
+        ).scalar() or 0
+
+        budget_list.append({
+            'id': budget.id,
+            'category': budget.category,
+            'limit': budget.limit,
+            'month': budget.month,
+            'spent': float(total_spent),
+            'remaining': float(budget.limit - total_spent)
+        })
 
     return jsonify(budgets=budget_list), 200
 
