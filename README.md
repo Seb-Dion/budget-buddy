@@ -8,12 +8,6 @@
 - **Income Tracking**: Record and manage your income sources.
 - **Budget Management**: Set monthly budgets for different categories and track your progress.
 - **Savings Goals**: Create savings goals, track progress, and visualize the progress toward your financial targets.
-- **Positive Streaks (In Development)**:
-  - Daily login streak.
-  - Positive monthly balance streak.
-  - Monthly budget streak for staying within your budget.
-- **Toast Notifications**: Users get notified with toasts when they are close to or exceeding their budget.
-- **Streak Notifications**: Toast notifications on login to celebrate streak achievements.
 - **Responsive Design**: Mobile-friendly UI.
   
 ## Technologies Used
@@ -29,7 +23,6 @@
 - **React**: A JavaScript library for building user interfaces.
 - **React Router**: For handling routing in the app.
 - **Axios**: For making API requests to the Flask backend.
-- **React-Toastify**: For showing toast notifications.
 - **CSS Modules**: For styling the React components.
   
 ## Installation and Setup
@@ -123,10 +116,10 @@ The React app will start on `http://localhost:3000`, and the Flask backend will 
 ## Screenshots
 
 ### Dashboard
-![Dashboard Screenshot](screenshots/DashboardPic.png)
+![Dashboard Screenshot](screenshots/dashy.png)
 
-### Expense List
-![Expense List Screenshot](screenshots/expensespic.png)
+### Income List
+![Expense List Screenshot](screenshots/expe.png)
 
 ## License
 
