@@ -104,9 +104,6 @@ The React app will start on `http://localhost:3000`, and the Flask backend will 
 - **POST /budget**: Set or update a budget for a category in a particular month.
 - **GET /budget/budgets**: Get all budgets for the authenticated user.
 
-### Streaks
-- **GET /auth/streaks**: Get the user's login streak and budget streak.
-
 ## Future Improvements
 
 - **AI-Powered Categorization**: Automatically categorize expenses based on transaction descriptions.
